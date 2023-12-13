@@ -1,5 +1,11 @@
 package diamond.consoles.modules.console.entity;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+
+import diamond.consoles.modules.console.dto.CriarConsoleDTO;
 import diamond.consoles.modules.jogo.entity.Jogo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,4 +34,20 @@ public class Console {
     @ManyToOne()
     @JoinColumn(name = "jogo", referencedColumnName = "codigo")
     private Jogo jogo;
+
+    public Console(CriarConsoleDTO criarConsoleDTO) {
+        this.nome = criarConsoleDTO.nome();
+        this.dataLancamento = this.gerarDataAtual();
+        this.empresa = criarConsoleDTO.empresa();
+    }
+
+
+    public Date gerarDataAtual() {
+        DateTimeFormatter formatoDesejado = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String dataAtual = LocalDate.now().format(formatoDesejado);
+
+        Date date = Date.from(LocalDate.parse(dataAtual, formatoDesejado).atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+        return date;
+    }
 }
