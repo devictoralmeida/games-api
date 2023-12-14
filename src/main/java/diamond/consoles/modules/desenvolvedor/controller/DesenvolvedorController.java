@@ -11,18 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import diamond.consoles.modules.desenvolvedor.dto.AtualizarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.CriarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaCriarDesenvolvedorDTO;
-import diamond.consoles.modules.desenvolvedor.dto.RespostaListarDesenvolvedorPorCodigoDTO;
+import diamond.consoles.modules.desenvolvedor.dto.RespostaLDesenvolvedorCompletoDTO;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaListarDesenvolvedoresDTO;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
+import diamond.consoles.modules.desenvolvedor.useCase.AtualizarDesenvolvedorUseCase;
 import diamond.consoles.modules.desenvolvedor.useCase.CriarDesenvolvedorUseCase;
+import diamond.consoles.modules.desenvolvedor.useCase.DeletarDesenvolvedorUseCase;
 import diamond.consoles.modules.desenvolvedor.useCase.ListarDesenvolvedorPorCodigoUseCase;
 import diamond.consoles.modules.desenvolvedor.useCase.ListagemPaginadaDesenvolvedoresUseCase;
 import jakarta.validation.Valid;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController()
 @RequestMapping("/desenvolvedores")
@@ -35,6 +41,12 @@ public class DesenvolvedorController {
 
     @Autowired
     private ListarDesenvolvedorPorCodigoUseCase listarDesenvolvedorPorCodigoUseCase;
+
+    @Autowired
+    private AtualizarDesenvolvedorUseCase atualizarDesenvolvedorUseCase;
+
+    @Autowired
+    private DeletarDesenvolvedorUseCase deletarDesenvolvedorUseCase;
 
     @PostMapping()
     public ResponseEntity<RespostaCriarDesenvolvedorDTO> create(
@@ -58,10 +70,25 @@ public class DesenvolvedorController {
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<RespostaListarDesenvolvedorPorCodigoDTO> listarPorCodigo(
+    public ResponseEntity<RespostaLDesenvolvedorCompletoDTO> listarPorCodigo(
             @PathVariable Long codigo) {
-        RespostaListarDesenvolvedorPorCodigoDTO response = this.listarDesenvolvedorPorCodigoUseCase.execute(codigo);
+        RespostaLDesenvolvedorCompletoDTO response = this.listarDesenvolvedorPorCodigoUseCase.execute(codigo);
         return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity<RespostaLDesenvolvedorCompletoDTO> update(@PathVariable Long codigo,
+            @RequestBody @Valid AtualizarDesenvolvedorDTO dadosParaAtualizar) {
+        RespostaLDesenvolvedorCompletoDTO response = this.atualizarDesenvolvedorUseCase.execute(codigo,
+                dadosParaAtualizar);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Void> destroy(@PathVariable Long codigo) {
+        this.deletarDesenvolvedorUseCase.execute(codigo);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import diamond.consoles.modules.desenvolvedor.dto.AtualizarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.CriarDesenvolvedorDTO;
 import diamond.consoles.modules.jogo.entity.Jogo;
 import jakarta.persistence.*;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "desenvolvedores")
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 public class Desenvolvedor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,5 +43,11 @@ public class Desenvolvedor {
         this.dataFundacao = LocalDate.now();
         this.website = criarDesenvolvedorDTO.website() != null ? criarDesenvolvedorDTO.website() : null;
         this.sede = criarDesenvolvedorDTO.sede();
+    }
+
+    public void update(AtualizarDesenvolvedorDTO dadosParaAtualizar) {
+        this.nome = dadosParaAtualizar.nome() != null ? dadosParaAtualizar.nome() : this.nome;
+        this.website = dadosParaAtualizar.website() != null ? dadosParaAtualizar.website() : this.website;
+        this.sede = dadosParaAtualizar.sede() != null ? dadosParaAtualizar.sede() : this.sede;
     }
 }
