@@ -1,12 +1,14 @@
 package diamond.consoles.modules.desenvolvedor.entity;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import diamond.consoles.modules.desenvolvedor.dto.CriarDesenvolvedorDTO;
+import diamond.consoles.modules.jogo.entity.Jogo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +33,9 @@ public class Desenvolvedor {
 
     private String website;
     private String sede;
+
+    @OneToMany(mappedBy = "desenvolvedor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Jogo> jogos;
 
     public Desenvolvedor(CriarDesenvolvedorDTO criarDesenvolvedorDTO) {
         this.nome = criarDesenvolvedorDTO.nome();

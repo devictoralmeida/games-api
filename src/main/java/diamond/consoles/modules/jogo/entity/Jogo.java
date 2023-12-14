@@ -48,7 +48,7 @@ public class Jogo {
     @Column(name = "url_capa")
     private String urlCapa;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "jogo_console", joinColumns = @JoinColumn(name = "jogo_codigo"), inverseJoinColumns = @JoinColumn(name = "console_codigo"))
     private Set<Console> consoles;
 

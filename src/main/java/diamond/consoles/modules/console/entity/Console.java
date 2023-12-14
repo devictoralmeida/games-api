@@ -35,7 +35,7 @@ public class Console {
 
     private String empresa;
 
-    @ManyToMany(mappedBy = "consoles")
+    @ManyToMany(mappedBy = "consoles", fetch = FetchType.LAZY)
     private Set<Jogo> jogos;
 
     public Console(CriarConsoleDTO criarConsoleDTO) {
