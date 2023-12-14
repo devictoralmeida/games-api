@@ -1,78 +1,66 @@
 package diamond.consoles.modules.jogo.entity;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
+import org.springframework.data.annotation.CreatedDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
 import diamond.consoles.modules.jogo.dto.CriarJogoDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity(name = "jogos")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "codigo")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Jogo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo", updatable = false)
     private Long codigo;
 
     private String nome;
     private String descricao;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "data_lancamento")
-    private java.util.Date dataLancamento;
+    @CreatedDate
+    @Column(name = "data_lancamento", updatable = false)
+    private LocalDate dataLancamento;
 
     private String website;
 
     @ManyToOne
-    @JoinColumn(name = "desenvolvedor", referencedColumnName = "codigo", insertable = false, updatable = false)
-    private Desenvolvedor desenvolvedorCodigo;
+    @JoinColumn(name = "desenvolvedor", referencedColumnName = "codigo", updatable = false, nullable = false)
+    private Desenvolvedor desenvolvedor;
 
-    @Column(name = "desenvolvedor", nullable = false)
-    private Map<String, Long> desenvolvedor;
 
     private String genero;
 
     @Column(name = "url_capa")
     private String urlCapa;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "jogo")
-    private Set<Console> consolesCodigo = new HashSet<>();
-
-    @Column(name = "consoles", nullable = false)
-    private List<Map<String, Long>> consoles;
+    @ManyToMany
+    @JoinTable(name = "jogo_console", joinColumns = @JoinColumn(name = "jogo_codigo"), inverseJoinColumns = @JoinColumn(name = "console_codigo"))
+    private Set<Console> consoles;
 
     public Jogo(CriarJogoDTO criarJogoDTO) {
         this.nome = criarJogoDTO.nome();
-        this.descricao = criarJogoDTO.descricao();
-        this.dataLancamento = this.gerarDataAtual();
-        this.website = criarJogoDTO.website();
-        this.desenvolvedor = criarJogoDTO.desenvolvedor();
+
+        this.descricao = criarJogoDTO.descricao() != null ? criarJogoDTO.descricao() : null;
+
+        this.dataLancamento = LocalDate.now();
+        this.website = criarJogoDTO.website() != null ? criarJogoDTO.website() : null;
         this.genero = criarJogoDTO.genero();
-        this.urlCapa = criarJogoDTO.urlCapa();
-        this.consoles = criarJogoDTO.consoles();
-    }
-
-    public Date gerarDataAtual() {
-        DateTimeFormatter formatoDesejado = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dataAtual = LocalDate.now().format(formatoDesejado);
-
-        Date date = Date.from(LocalDate.parse(dataAtual, formatoDesejado).atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        return date;
+        this.urlCapa = criarJogoDTO.urlCapa() != null ? criarJogoDTO.urlCapa() : null;
     }
 }

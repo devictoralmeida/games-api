@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import diamond.consoles.modules.console.dto.CriarConsoleDTO;
+import diamond.consoles.modules.console.dto.RespostaCriarConsoleDTO;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.useCase.CriarConsoleUseCase;
 import jakarta.validation.Valid;
@@ -20,12 +21,14 @@ public class ConsoleController {
     private CriarConsoleUseCase criarConsoleUseCase;
 
     @PostMapping()
-    public ResponseEntity<Console> create(@Valid @RequestBody CriarConsoleDTO criarConsoleDTO,
+    public ResponseEntity<RespostaCriarConsoleDTO> create(@RequestBody @Valid CriarConsoleDTO criarConsoleDTO,
             UriComponentsBuilder uriBuilder) {
         Console console = this.criarConsoleUseCase.execute(criarConsoleDTO);
 
+        RespostaCriarConsoleDTO resposta = new RespostaCriarConsoleDTO(console);
+
         var uri = uriBuilder.path("/consoles/{codigo}").buildAndExpand(console.getCodigo()).toUri();
-        
-        return ResponseEntity.created(uri).body(console);
+
+        return ResponseEntity.created(uri).body(resposta);
     }
 }
