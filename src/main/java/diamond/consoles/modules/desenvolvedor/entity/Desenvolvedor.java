@@ -38,14 +38,4 @@ public class Desenvolvedor {
         this.website = criarDesenvolvedorDTO.website() != null ? criarDesenvolvedorDTO.website() : null;
         this.sede = criarDesenvolvedorDTO.sede();
     }
-
-    // public Date gerarDataAtual() {
-    //     DateTimeFormatter formatoDesejado = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    //     String dataAtual = LocalDate.now().format(formatoDesejado);
-
-    //     Date date = Date
-    //             .from(LocalDate.parse(dataAtual, formatoDesejado).atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-    //     return date;
-    // }
 }

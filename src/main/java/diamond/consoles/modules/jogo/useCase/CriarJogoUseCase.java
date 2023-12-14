@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import diamond.consoles.exceptions.ConsoleNotFoundException;
+import diamond.consoles.exceptions.DeveloperNotFoundException;
+import diamond.consoles.exceptions.GameAlreadyExistsException;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
@@ -30,14 +33,29 @@ public class CriarJogoUseCase {
 
     @Transactional
     public Jogo execute(CriarJogoDTO criarJogoDTO) {
+
+        this.jogoRepositorio.findByNome(criarJogoDTO.nome()).ifPresent(
+                jogo -> {
+                    throw new GameAlreadyExistsException();
+                });
+
         Long codigoDesenvolvedor = criarJogoDTO.desenvolvedor().get("codigo");
-        Desenvolvedor desenvolvedor = this.desenvolvedorRepositorio.getReferenceById(codigoDesenvolvedor);
+
+        var desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigoDesenvolvedor).orElseThrow(
+                () -> {
+                    throw new DeveloperNotFoundException();
+                });
 
         Set<Console> consoles = new HashSet<>();
 
         for (Map<String, Long> item : criarJogoDTO.consoles()) {
             Long codigoConsole = item.get("codigo");
-            Console console = this.consoleRepositorio.getReferenceById(codigoConsole);
+
+            var console = this.consoleRepositorio.findByCodigo(codigoConsole).orElseThrow(
+                    () -> {
+                        throw new ConsoleNotFoundException();
+                    });
+
             consoles.add(console);
         }
 
