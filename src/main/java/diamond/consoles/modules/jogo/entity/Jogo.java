@@ -43,7 +43,6 @@ public class Jogo {
     @JoinColumn(name = "desenvolvedor", referencedColumnName = "codigo", updatable = false, nullable = false)
     private Desenvolvedor desenvolvedor;
 
-
     private String genero;
 
     @Column(name = "url_capa")
