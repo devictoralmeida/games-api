@@ -1,9 +1,11 @@
 package diamond.consoles.modules.console.entity;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.util.Set;
+
+import org.springframework.data.annotation.CreatedDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import diamond.consoles.modules.console.dto.CriarConsoleDTO;
 import diamond.consoles.modules.jogo.entity.Jogo;
@@ -18,36 +20,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "codigo")
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
 public class Console {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "codigo", updatable = false)
     private Long codigo;
 
     private String nome;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "data_lancamento")
-    private java.util.Date dataLancamento;
+    @CreatedDate
+    @Column(name = "data_lancamento", updatable = false)
+    private LocalDate dataLancamento;
 
     private String empresa;
 
-    @ManyToOne()
-    @JoinColumn(name = "jogo", referencedColumnName = "codigo")
-    private Jogo jogo;
+    @ManyToMany(mappedBy = "consoles", fetch = FetchType.LAZY)
+    private Set<Jogo> jogos;
 
     public Console(CriarConsoleDTO criarConsoleDTO) {
         this.nome = criarConsoleDTO.nome();
-        this.dataLancamento = this.gerarDataAtual();
+        this.dataLancamento = LocalDate.now();
         this.empresa = criarConsoleDTO.empresa();
-    }
-
-
-    public Date gerarDataAtual() {
-        DateTimeFormatter formatoDesejado = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String dataAtual = LocalDate.now().format(formatoDesejado);
-
-        Date date = Date.from(LocalDate.parse(dataAtual, formatoDesejado).atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-        return date;
     }
 }
