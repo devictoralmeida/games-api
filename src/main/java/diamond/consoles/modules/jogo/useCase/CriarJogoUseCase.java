@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.ConsoleNotFoundException;
-import diamond.consoles.exceptions.DeveloperNotFoundException;
-import diamond.consoles.exceptions.GameAlreadyExistsException;
+import diamond.consoles.exceptions.console.ConsoleNotFoundException;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
+import diamond.consoles.exceptions.jogo.GameAlreadyExistsException;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
@@ -43,7 +43,7 @@ public class CriarJogoUseCase {
 
         var desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigoDesenvolvedor).orElseThrow(
                 () -> {
-                    throw new DeveloperNotFoundException();
+                    throw new ExcessaoDesenvolvedorNaoEncontrado();
                 });
 
         Set<Console> consoles = new HashSet<>();

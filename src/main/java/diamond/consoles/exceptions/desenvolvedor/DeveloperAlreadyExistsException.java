@@ -1,4 +1,4 @@
-package diamond.consoles.exceptions;
+package diamond.consoles.exceptions.desenvolvedor;
 
 public class DeveloperAlreadyExistsException extends RuntimeException {
     public DeveloperAlreadyExistsException() {

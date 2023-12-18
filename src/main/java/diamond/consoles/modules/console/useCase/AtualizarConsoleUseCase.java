@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.ConsoleNotFoundException;
-import diamond.consoles.exceptions.GameNotFoundException;
+import diamond.consoles.exceptions.console.ConsoleAlreadyExistsException;
+import diamond.consoles.exceptions.console.ConsoleNotFoundException;
+import diamond.consoles.exceptions.jogo.GameNotFoundException;
 import diamond.consoles.modules.console.dto.AtualizarConsoleDTO;
 import diamond.consoles.modules.console.dto.RespostaConsoleCompletoDTO;
 import diamond.consoles.modules.console.entity.Console;
@@ -35,13 +36,19 @@ public class AtualizarConsoleUseCase {
                 });
 
         if (atualizarConsoleDTO.nome() != null && !console.getNome().equals(atualizarConsoleDTO.nome())) {
+
+            this.consoleRepositorio.findByNome(atualizarConsoleDTO.nome()).ifPresent(
+                    x -> {
+                        throw new ConsoleAlreadyExistsException();
+                    });
+
             console.setNome(atualizarConsoleDTO.nome());
         }
 
         Set<Jogo> jogos = new HashSet<Jogo>();
 
-        if (atualizarConsoleDTO.codigoJogos() != null && atualizarConsoleDTO.codigoJogos().size() >= 1) {
-            for (Long codigoJogo : atualizarConsoleDTO.codigoJogos()) {
+        if (atualizarConsoleDTO.jogos() != null && atualizarConsoleDTO.jogos().size() >= 1) {
+            for (Long codigoJogo : atualizarConsoleDTO.jogos()) {
                 Jogo jogo = jogoRepositorio.findByCodigo(codigoJogo).orElseThrow(
                         () -> {
                             throw new GameNotFoundException();

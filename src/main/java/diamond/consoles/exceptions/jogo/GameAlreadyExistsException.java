@@ -1,4 +1,4 @@
-package diamond.consoles.exceptions;
+package diamond.consoles.exceptions.jogo;
 
 public class GameAlreadyExistsException extends RuntimeException {
     public GameAlreadyExistsException() {

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.DeveloperAlreadyExistsException;
+import diamond.consoles.exceptions.desenvolvedor.DeveloperAlreadyExistsException;
 import diamond.consoles.modules.desenvolvedor.dto.CriarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
 import diamond.consoles.modules.desenvolvedor.repository.DesenvolvedorRepositorio;

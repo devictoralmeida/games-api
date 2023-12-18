@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.DeveloperAlreadyExistsException;
-import diamond.consoles.exceptions.DeveloperNotFoundException;
+import diamond.consoles.exceptions.desenvolvedor.DeveloperAlreadyExistsException;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
 import diamond.consoles.modules.desenvolvedor.dto.AtualizarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaLDesenvolvedorCompletoDTO;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
@@ -24,7 +24,7 @@ public class AtualizarDesenvolvedorUseCase {
     public RespostaLDesenvolvedorCompletoDTO execute(Long codigo, AtualizarDesenvolvedorDTO dadosParaAtualizar) {
         Desenvolvedor desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new DeveloperNotFoundException();
+                    throw new ExcessaoDesenvolvedorNaoEncontrado();
                 });
 
         if (dadosParaAtualizar.nome() != null && !dadosParaAtualizar.nome().equals(desenvolvedor.getNome())) {
@@ -34,7 +34,13 @@ public class AtualizarDesenvolvedorUseCase {
                     });
         }
 
-        desenvolvedor.update(dadosParaAtualizar);
+        if (dadosParaAtualizar.website() != null && !desenvolvedor.getWebsite().equals(dadosParaAtualizar.website())) {
+            desenvolvedor.setWebsite(dadosParaAtualizar.website());
+        }
+
+        if (dadosParaAtualizar.sede() != null && !desenvolvedor.getSede().equals(dadosParaAtualizar.sede())) {
+            desenvolvedor.setSede(dadosParaAtualizar.sede());
+        }
 
         List<RetornoJogoParcialDTO> jogos = desenvolvedor.getJogos().stream()
                 .map(jogo -> new RetornoJogoParcialDTO(jogo)).collect(Collectors.toList());

@@ -36,7 +36,6 @@ public class Console {
 
     private String empresa;
 
-    // @ManyToMany(mappedBy = "consoles", fetch = FetchType.LAZY)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "jogo_console", joinColumns = @JoinColumn(name = "console_codigo"), inverseJoinColumns = @JoinColumn(name = "jogo_codigo"))
     private Set<Jogo> jogos = new HashSet<Jogo>();

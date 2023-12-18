@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +23,7 @@ import diamond.consoles.modules.console.dto.RespostaListarConsolesDTO;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.useCase.AtualizarConsoleUseCase;
 import diamond.consoles.modules.console.useCase.CriarConsoleUseCase;
+import diamond.consoles.modules.console.useCase.DeletarConsoleUseCase;
 import diamond.consoles.modules.console.useCase.ListagemPaginadaConsolesUseCase;
 import diamond.consoles.modules.console.useCase.ListarConsolePorCodigoUseCase;
 
@@ -41,6 +43,9 @@ public class ConsoleController {
 
     @Autowired
     private AtualizarConsoleUseCase atualizarConsoleUseCase;
+
+    @Autowired
+    private DeletarConsoleUseCase deletarConsoleUseCase;
 
     @PostMapping()
     public ResponseEntity<RespostaCriarConsoleDTO> create(@RequestBody @Valid CriarConsoleDTO criarConsoleDTO,
@@ -73,5 +78,11 @@ public class ConsoleController {
         RespostaConsoleCompletoDTO response = this.atualizarConsoleUseCase.execute(codigo, dadosParaAtualizar);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Void> destroy(@PathVariable Long codigo) {
+        this.deletarConsoleUseCase.execute(codigo);
+        return ResponseEntity.noContent().build();
     }
 }

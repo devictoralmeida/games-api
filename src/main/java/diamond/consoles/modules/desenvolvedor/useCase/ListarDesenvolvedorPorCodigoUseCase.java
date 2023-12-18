@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.DeveloperNotFoundException;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaLDesenvolvedorCompletoDTO;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
 import diamond.consoles.modules.desenvolvedor.repository.DesenvolvedorRepositorio;
@@ -22,7 +22,7 @@ public class ListarDesenvolvedorPorCodigoUseCase {
     public RespostaLDesenvolvedorCompletoDTO execute(Long codigo) {
         Desenvolvedor desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new DeveloperNotFoundException();
+                    throw new ExcessaoDesenvolvedorNaoEncontrado();
                 });
 
         List<RetornoJogoParcialDTO> jogos = desenvolvedor.getJogos().stream()

@@ -1,4 +1,4 @@
-package diamond.consoles.exceptions;
+package diamond.consoles.exceptions.controller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +11,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import diamond.consoles.exceptions.console.ConsoleAlreadyExistsException;
+import diamond.consoles.exceptions.console.ConsoleNotFoundException;
+import diamond.consoles.exceptions.desenvolvedor.DeveloperAlreadyExistsException;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
 import diamond.consoles.exceptions.dto.ErrorResponseDTO;
 import diamond.consoles.exceptions.dto.ResourceNotFoundDTO;
 import diamond.consoles.exceptions.dto.ValidationErrorDTO;
+import diamond.consoles.exceptions.jogo.GameAlreadyExistsException;
+import diamond.consoles.exceptions.jogo.GameNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 
 @ControllerAdvice
@@ -59,8 +65,8 @@ public class ExceptionHandlerController {
         return ResponseEntity.status(409).body(response);
     }
 
-    @ExceptionHandler(DeveloperNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> developerNotFound(DeveloperNotFoundException exception) {
+    @ExceptionHandler(ExcessaoDesenvolvedorNaoEncontrado.class)
+    public ResponseEntity<ErrorResponseDTO> developerNotFound(ExcessaoDesenvolvedorNaoEncontrado exception) {
         ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
         return ResponseEntity.status(404).body(response);
     }

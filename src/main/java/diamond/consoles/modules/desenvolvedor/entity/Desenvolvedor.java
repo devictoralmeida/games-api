@@ -44,10 +44,4 @@ public class Desenvolvedor {
         this.website = criarDesenvolvedorDTO.website() != null ? criarDesenvolvedorDTO.website() : null;
         this.sede = criarDesenvolvedorDTO.sede();
     }
-
-    public void update(AtualizarDesenvolvedorDTO dadosParaAtualizar) {
-        this.nome = dadosParaAtualizar.nome() != null ? dadosParaAtualizar.nome() : this.nome;
-        this.website = dadosParaAtualizar.website() != null ? dadosParaAtualizar.website() : this.website;
-        this.sede = dadosParaAtualizar.sede() != null ? dadosParaAtualizar.sede() : this.sede;
-    }
 }

@@ -1,4 +1,4 @@
-package diamond.consoles.exceptions;
+package diamond.consoles.exceptions.console;
 
 public class ConsoleNotFoundException extends RuntimeException {
     public ConsoleNotFoundException() {

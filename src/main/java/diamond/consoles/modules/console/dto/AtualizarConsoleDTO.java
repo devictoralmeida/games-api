@@ -4,7 +4,7 @@ import java.util.List;
 
 public record AtualizarConsoleDTO(
     String nome,
-    List<Long> codigoJogos
+    List<Long> jogos
 ) {
 
 }
