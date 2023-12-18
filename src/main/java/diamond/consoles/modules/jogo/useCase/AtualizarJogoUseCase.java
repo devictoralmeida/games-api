@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.console.ConsoleNotFoundException;
-import diamond.consoles.exceptions.jogo.GameAlreadyExistsException;
-import diamond.consoles.exceptions.jogo.GameNotFoundException;
+import diamond.consoles.exceptions.console.ExcessaoConsoleNaoEncontrado;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoJaExiste;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoNaoEncontrado;
 import diamond.consoles.modules.console.dto.RespostaParcialConsoleDTO;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
@@ -33,13 +33,13 @@ public class AtualizarJogoUseCase {
     public RespostaJogoCompletoDTO execute(Long codigo, AtualizarJogoDTO dadosParaAtualizar) {
         Jogo jogo = this.jogoRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new GameNotFoundException();
+                    throw new ExcessaoJogoNaoEncontrado();
                 });
 
         if (dadosParaAtualizar.nome() != null && !jogo.getNome().equals(dadosParaAtualizar.nome())) {
             this.jogoRepositorio.findByNome(dadosParaAtualizar.nome()).ifPresent(
                     x -> {
-                        throw new GameAlreadyExistsException();
+                        throw new ExcessaoJogoJaExiste();
                     });
 
             jogo.setNome(dadosParaAtualizar.nome());
@@ -67,7 +67,7 @@ public class AtualizarJogoUseCase {
             for (Long codigoConsole : dadosParaAtualizar.consoles()) {
                 Console console = consoleRepositorio.findByCodigo(codigoConsole).orElseThrow(
                         () -> {
-                            throw new ConsoleNotFoundException();
+                            throw new ExcessaoConsoleNaoEncontrado();
                         });
 
                 consoleSet.add(console);

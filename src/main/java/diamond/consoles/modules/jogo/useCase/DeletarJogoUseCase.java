@@ -3,7 +3,7 @@ package diamond.consoles.modules.jogo.useCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import diamond.consoles.exceptions.jogo.GameNotFoundException;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoNaoEncontrado;
 import diamond.consoles.modules.jogo.entity.Jogo;
 import diamond.consoles.modules.jogo.repository.JogoRepositorio;
 
@@ -15,7 +15,7 @@ public class DeletarJogoUseCase {
     public void execute(Long codigo) {
         Jogo jogo = this.jogoRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new GameNotFoundException();
+                    throw new ExcessaoJogoNaoEncontrado();
                 });
 
         this.jogoRepositorio.delete(jogo);

@@ -13,14 +13,12 @@ import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
 import diamond.consoles.modules.jogo.dto.CriarJogoDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity(name = "jogos")
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "codigo")

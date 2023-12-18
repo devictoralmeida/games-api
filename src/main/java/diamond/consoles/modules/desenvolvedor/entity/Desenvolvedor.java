@@ -7,7 +7,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import diamond.consoles.modules.desenvolvedor.dto.AtualizarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.CriarDesenvolvedorDTO;
 import diamond.consoles.modules.jogo.entity.Jogo;
 import jakarta.persistence.*;

@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.console.ConsoleAlreadyExistsException;
-import diamond.consoles.exceptions.console.ConsoleNotFoundException;
-import diamond.consoles.exceptions.jogo.GameNotFoundException;
+import diamond.consoles.exceptions.console.ExcessaoConsoleJaExiste;
+import diamond.consoles.exceptions.console.ExcessaoConsoleNaoEncontrado;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoNaoEncontrado;
 import diamond.consoles.modules.console.dto.AtualizarConsoleDTO;
 import diamond.consoles.modules.console.dto.RespostaConsoleCompletoDTO;
 import diamond.consoles.modules.console.entity.Console;
@@ -32,14 +32,14 @@ public class AtualizarConsoleUseCase {
     public RespostaConsoleCompletoDTO execute(Long codigo, AtualizarConsoleDTO atualizarConsoleDTO) {
         Console console = consoleRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new ConsoleNotFoundException();
+                    throw new ExcessaoConsoleNaoEncontrado();
                 });
 
         if (atualizarConsoleDTO.nome() != null && !console.getNome().equals(atualizarConsoleDTO.nome())) {
 
             this.consoleRepositorio.findByNome(atualizarConsoleDTO.nome()).ifPresent(
                     x -> {
-                        throw new ConsoleAlreadyExistsException();
+                        throw new ExcessaoConsoleJaExiste();
                     });
 
             console.setNome(atualizarConsoleDTO.nome());
@@ -51,7 +51,7 @@ public class AtualizarConsoleUseCase {
             for (Long codigoJogo : atualizarConsoleDTO.jogos()) {
                 Jogo jogo = jogoRepositorio.findByCodigo(codigoJogo).orElseThrow(
                         () -> {
-                            throw new GameNotFoundException();
+                            throw new ExcessaoJogoNaoEncontrado();
                         });
 
                 jogos.add(jogo);
