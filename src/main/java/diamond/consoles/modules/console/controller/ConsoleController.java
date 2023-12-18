@@ -8,19 +8,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import diamond.consoles.modules.console.dto.AtualizarConsoleDTO;
 import diamond.consoles.modules.console.dto.CriarConsoleDTO;
 import diamond.consoles.modules.console.dto.RespostaCriarConsoleDTO;
-import diamond.consoles.modules.console.dto.RespostaListarConsolePorCodigoDTO;
+import diamond.consoles.modules.console.dto.RespostaConsoleCompletoDTO;
 import diamond.consoles.modules.console.dto.RespostaListarConsolesDTO;
 import diamond.consoles.modules.console.entity.Console;
+import diamond.consoles.modules.console.useCase.AtualizarConsoleUseCase;
 import diamond.consoles.modules.console.useCase.CriarConsoleUseCase;
 import diamond.consoles.modules.console.useCase.ListagemPaginadaConsolesUseCase;
 import diamond.consoles.modules.console.useCase.ListarConsolePorCodigoUseCase;
+
 import jakarta.validation.Valid;
 
 @RestController()
@@ -34,6 +38,9 @@ public class ConsoleController {
 
     @Autowired
     private ListarConsolePorCodigoUseCase listarConsolePorCodigoUseCase;
+
+    @Autowired
+    private AtualizarConsoleUseCase atualizarConsoleUseCase;
 
     @PostMapping()
     public ResponseEntity<RespostaCriarConsoleDTO> create(@RequestBody @Valid CriarConsoleDTO criarConsoleDTO,
@@ -55,8 +62,16 @@ public class ConsoleController {
     }
 
     @GetMapping("/{codigo}")
-    public ResponseEntity<RespostaListarConsolePorCodigoDTO> listarPorCodigo(@PathVariable Long codigo) {
-        RespostaListarConsolePorCodigoDTO response = this.listarConsolePorCodigoUseCase.execute(codigo);
+    public ResponseEntity<RespostaConsoleCompletoDTO> listarPorCodigo(@PathVariable Long codigo) {
+        RespostaConsoleCompletoDTO response = this.listarConsolePorCodigoUseCase.execute(codigo);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity<RespostaConsoleCompletoDTO> update(@PathVariable Long codigo,
+            @RequestBody @Valid AtualizarConsoleDTO dadosParaAtualizar) {
+        RespostaConsoleCompletoDTO response = this.atualizarConsoleUseCase.execute(codigo, dadosParaAtualizar);
+
         return ResponseEntity.ok(response);
     }
 }

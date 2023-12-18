@@ -1,6 +1,7 @@
 package diamond.consoles.modules.console.entity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "codigo")
-@JsonIgnoreProperties({"hibernateLazyInitializer"})
+@JsonIgnoreProperties({ "hibernateLazyInitializer" })
 public class Console {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +36,10 @@ public class Console {
 
     private String empresa;
 
-    @ManyToMany(mappedBy = "consoles", fetch = FetchType.LAZY)
-    private Set<Jogo> jogos;
+    // @ManyToMany(mappedBy = "consoles", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "jogo_console", joinColumns = @JoinColumn(name = "console_codigo"), inverseJoinColumns = @JoinColumn(name = "jogo_codigo"))
+    private Set<Jogo> jogos = new HashSet<Jogo>();
 
     public Console(CriarConsoleDTO criarConsoleDTO) {
         this.nome = criarConsoleDTO.nome();

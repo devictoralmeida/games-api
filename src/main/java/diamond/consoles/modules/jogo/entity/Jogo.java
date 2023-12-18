@@ -1,6 +1,7 @@
 package diamond.consoles.modules.jogo.entity;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -50,7 +51,7 @@ public class Jogo {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "jogo_console", joinColumns = @JoinColumn(name = "jogo_codigo"), inverseJoinColumns = @JoinColumn(name = "console_codigo"))
-    private Set<Console> consoles;
+    private Set<Console> consoles = new HashSet<Console>();
 
     public Jogo(CriarJogoDTO criarJogoDTO) {
         this.nome = criarJogoDTO.nome();

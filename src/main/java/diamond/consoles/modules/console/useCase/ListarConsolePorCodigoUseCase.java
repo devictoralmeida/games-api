@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import diamond.consoles.exceptions.ConsoleNotFoundException;
-import diamond.consoles.modules.console.dto.RespostaListarConsolePorCodigoDTO;
+import diamond.consoles.modules.console.dto.RespostaConsoleCompletoDTO;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
 import diamond.consoles.modules.jogo.dto.RetornoJogoParcialDTO;
 
@@ -17,7 +17,7 @@ public class ListarConsolePorCodigoUseCase {
     private ConsoleRepositorio consoleRepositorio;
 
     @Transactional
-    public RespostaListarConsolePorCodigoDTO execute(Long codigo) {
+    public RespostaConsoleCompletoDTO execute(Long codigo) {
         var console = this.consoleRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
                     throw new ConsoleNotFoundException();
@@ -26,6 +26,6 @@ public class ListarConsolePorCodigoUseCase {
         var jogos = console.getJogos().stream().map(jogo -> new RetornoJogoParcialDTO(jogo))
                 .collect(Collectors.toList());
 
-        return new RespostaListarConsolePorCodigoDTO(console, jogos);
+        return new RespostaConsoleCompletoDTO(console, jogos);
     }
 }
