@@ -5,21 +5,20 @@ import java.util.List;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import diamond.consoles.exceptions.console.ConsoleAlreadyExistsException;
-import diamond.consoles.exceptions.console.ConsoleNotFoundException;
-import diamond.consoles.exceptions.desenvolvedor.DeveloperAlreadyExistsException;
+import diamond.consoles.exceptions.console.ExcessaoConsoleJaExiste;
+import diamond.consoles.exceptions.console.ExcessaoConsoleNaoEncontrado;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorJaExiste;
 import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
-import diamond.consoles.exceptions.dto.ErrorResponseDTO;
-import diamond.consoles.exceptions.dto.ResourceNotFoundDTO;
-import diamond.consoles.exceptions.dto.ValidationErrorDTO;
-import diamond.consoles.exceptions.jogo.GameAlreadyExistsException;
-import diamond.consoles.exceptions.jogo.GameNotFoundException;
+import diamond.consoles.exceptions.dto.RespostaErroDTO;
+import diamond.consoles.exceptions.dto.RecursoNaoEncontradoDTO;
+import diamond.consoles.exceptions.dto.ErroDeValidacaoDTO;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoJaExiste;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoNaoEncontrado;
 import jakarta.persistence.EntityNotFoundException;
 
 @ControllerAdvice
@@ -31,15 +30,15 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<ValidationErrorDTO>> handleMethodArgumentNotValidException(
+    public ResponseEntity<List<ErroDeValidacaoDTO>> handleMethodArgumentNotValidException(
             MethodArgumentNotValidException exception) {
 
-        List<ValidationErrorDTO> response = new ArrayList<ValidationErrorDTO>();
+        List<ErroDeValidacaoDTO> response = new ArrayList<ErroDeValidacaoDTO>();
 
         exception.getBindingResult().getFieldErrors().forEach(err -> {
             String message = messageSource.getMessage(err, LocaleContextHolder.getLocale());
 
-            ValidationErrorDTO error = new ValidationErrorDTO(err.getField(), message);
+            ErroDeValidacaoDTO error = new ErroDeValidacaoDTO(err.getField(), message);
             response.add(error);
         });
 
@@ -47,45 +46,45 @@ public class ExceptionHandlerController {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> resourceNotFound() {
-        ResourceNotFoundDTO exception = new ResourceNotFoundDTO();
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    public ResponseEntity<RespostaErroDTO> resourceNotFound() {
+        RecursoNaoEncontradoDTO exception = new RecursoNaoEncontradoDTO();
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(404).body(response);
     }
 
-    @ExceptionHandler(GameNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> gameNotFound(GameNotFoundException exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    @ExceptionHandler(ExcessaoJogoNaoEncontrado.class)
+    public ResponseEntity<RespostaErroDTO> gameNotFound(ExcessaoJogoNaoEncontrado exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(404).body(response);
     }
 
-    @ExceptionHandler(GameAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDTO> gameAlreadyExists(GameAlreadyExistsException exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    @ExceptionHandler(ExcessaoJogoJaExiste.class)
+    public ResponseEntity<RespostaErroDTO> gameAlreadyExists(ExcessaoJogoJaExiste exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(409).body(response);
     }
 
     @ExceptionHandler(ExcessaoDesenvolvedorNaoEncontrado.class)
-    public ResponseEntity<ErrorResponseDTO> developerNotFound(ExcessaoDesenvolvedorNaoEncontrado exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    public ResponseEntity<RespostaErroDTO> developerNotFound(ExcessaoDesenvolvedorNaoEncontrado exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(404).body(response);
     }
 
-    @ExceptionHandler(DeveloperAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDTO> developerAlreadyExists(DeveloperAlreadyExistsException exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    @ExceptionHandler(ExcessaoDesenvolvedorJaExiste.class)
+    public ResponseEntity<RespostaErroDTO> developerAlreadyExists(ExcessaoDesenvolvedorJaExiste exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(409).body(response);
     }
 
-    @ExceptionHandler(ConsoleNotFoundException.class)
-    public ResponseEntity<ErrorResponseDTO> consoleNotFound(ConsoleNotFoundException exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    @ExceptionHandler(ExcessaoConsoleNaoEncontrado.class)
+    public ResponseEntity<RespostaErroDTO> consoleNotFound(ExcessaoConsoleNaoEncontrado exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(404).body(response);
     }
 
-    @ExceptionHandler(ConsoleAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDTO> consoleAlreadyExists(ConsoleAlreadyExistsException exception) {
-        ErrorResponseDTO response = new ErrorResponseDTO(exception.getMessage());
+    @ExceptionHandler(ExcessaoConsoleJaExiste.class)
+    public ResponseEntity<RespostaErroDTO> consoleAlreadyExists(ExcessaoConsoleJaExiste exception) {
+        RespostaErroDTO response = new RespostaErroDTO(exception.getMessage());
         return ResponseEntity.status(409).body(response);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.desenvolvedor.DeveloperAlreadyExistsException;
+import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorJaExiste;
 import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
 import diamond.consoles.modules.desenvolvedor.dto.AtualizarDesenvolvedorDTO;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaLDesenvolvedorCompletoDTO;
@@ -30,7 +30,7 @@ public class AtualizarDesenvolvedorUseCase {
         if (dadosParaAtualizar.nome() != null && !dadosParaAtualizar.nome().equals(desenvolvedor.getNome())) {
             this.desenvolvedorRepositorio.findByNome(dadosParaAtualizar.nome()).ifPresent(
                     x -> {
-                        throw new DeveloperAlreadyExistsException();
+                        throw new ExcessaoDesenvolvedorJaExiste();
                     });
         }
 

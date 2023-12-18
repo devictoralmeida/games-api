@@ -1,7 +1,7 @@
 package diamond.consoles.exceptions.jogo;
 
-public class GameAlreadyExistsException extends RuntimeException {
-    public GameAlreadyExistsException() {
+public class ExcessaoJogoJaExiste extends RuntimeException {
+    public ExcessaoJogoJaExiste() {
         super("Já existe um jogo cadastrado com esse nome");
     }
 }

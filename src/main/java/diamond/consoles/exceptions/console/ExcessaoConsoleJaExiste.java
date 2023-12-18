@@ -1,7 +1,7 @@
 package diamond.consoles.exceptions.console;
 
-public class ConsoleAlreadyExistsException extends RuntimeException {
-    public ConsoleAlreadyExistsException() {
+public class ExcessaoConsoleJaExiste extends RuntimeException {
+    public ExcessaoConsoleJaExiste() {
         super("Já existe um console cadastrado com esse nome");
     }
 }

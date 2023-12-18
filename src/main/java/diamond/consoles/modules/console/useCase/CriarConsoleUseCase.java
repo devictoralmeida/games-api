@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.console.ConsoleAlreadyExistsException;
+import diamond.consoles.exceptions.console.ExcessaoConsoleJaExiste;
 import diamond.consoles.modules.console.dto.CriarConsoleDTO;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
@@ -18,7 +18,7 @@ public class CriarConsoleUseCase {
     public Console execute(CriarConsoleDTO criarConsoleDTO) {
         this.consoleRepositorio.findByNome(criarConsoleDTO.nome()).ifPresent(
             console -> {
-                throw new ConsoleAlreadyExistsException();
+                throw new ExcessaoConsoleJaExiste();
             }
         );
 

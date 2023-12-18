@@ -1,6 +1,5 @@
 package diamond.consoles.modules.jogo.useCase;
 
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -9,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.console.ConsoleNotFoundException;
+import diamond.consoles.exceptions.console.ExcessaoConsoleNaoEncontrado;
 import diamond.consoles.exceptions.desenvolvedor.ExcessaoDesenvolvedorNaoEncontrado;
-import diamond.consoles.exceptions.jogo.GameAlreadyExistsException;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoJaExiste;
 import diamond.consoles.modules.console.entity.Console;
 import diamond.consoles.modules.console.repository.ConsoleRepositorio;
 import diamond.consoles.modules.desenvolvedor.entity.Desenvolvedor;
@@ -36,12 +35,12 @@ public class CriarJogoUseCase {
 
         this.jogoRepositorio.findByNome(criarJogoDTO.nome()).ifPresent(
                 jogo -> {
-                    throw new GameAlreadyExistsException();
+                    throw new ExcessaoJogoJaExiste();
                 });
 
         Long codigoDesenvolvedor = criarJogoDTO.desenvolvedor().get("codigo");
 
-        var desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigoDesenvolvedor).orElseThrow(
+        Desenvolvedor desenvolvedor = this.desenvolvedorRepositorio.findByCodigo(codigoDesenvolvedor).orElseThrow(
                 () -> {
                     throw new ExcessaoDesenvolvedorNaoEncontrado();
                 });
@@ -51,27 +50,20 @@ public class CriarJogoUseCase {
         for (Map<String, Long> item : criarJogoDTO.consoles()) {
             Long codigoConsole = item.get("codigo");
 
-            var console = this.consoleRepositorio.findByCodigo(codigoConsole).orElseThrow(
+            Console console = this.consoleRepositorio.findByCodigo(codigoConsole).orElseThrow(
                     () -> {
-                        throw new ConsoleNotFoundException();
+                        throw new ExcessaoConsoleNaoEncontrado();
                     });
 
             consoles.add(console);
         }
 
-        Jogo jogoEntity = Jogo.builder()
-                .nome(criarJogoDTO.nome())
-                .descricao(criarJogoDTO.descricao())
-                .dataLancamento(LocalDate.now())
-                .website(criarJogoDTO.website())
-                .desenvolvedor(desenvolvedor)
-                .genero(criarJogoDTO.genero())
-                .urlCapa(criarJogoDTO.urlCapa())
-                .consoles(consoles)
-                .build();
+        Jogo jogo = new Jogo(criarJogoDTO);
+        jogo.setConsoles(consoles);
+        jogo.setDesenvolvedor(desenvolvedor);
 
-        this.jogoRepositorio.save(jogoEntity);
+        this.jogoRepositorio.save(jogo);
 
-        return jogoEntity;
+        return jogo;
     }
 }

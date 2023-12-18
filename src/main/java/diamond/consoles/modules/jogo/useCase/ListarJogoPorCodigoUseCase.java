@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import diamond.consoles.exceptions.jogo.GameNotFoundException;
+import diamond.consoles.exceptions.jogo.ExcessaoJogoNaoEncontrado;
 import diamond.consoles.modules.console.dto.RespostaParcialConsoleDTO;
 import diamond.consoles.modules.desenvolvedor.dto.RespostaDesenvolvedorParcialDTO;
 import diamond.consoles.modules.jogo.dto.RespostaJogoCompletoDTO;
@@ -22,7 +22,7 @@ public class ListarJogoPorCodigoUseCase {
     public RespostaJogoCompletoDTO execute(Long codigo) {
         var jogo = this.jogoRepositorio.findByCodigo(codigo).orElseThrow(
                 () -> {
-                    throw new GameNotFoundException();
+                    throw new ExcessaoJogoNaoEncontrado();
                 });
 
         var desenvolvedor = new RespostaDesenvolvedorParcialDTO(jogo.getDesenvolvedor());
