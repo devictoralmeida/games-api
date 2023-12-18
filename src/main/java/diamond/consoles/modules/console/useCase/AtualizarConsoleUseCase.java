@@ -40,16 +40,15 @@ public class AtualizarConsoleUseCase {
 
         Set<Jogo> jogos = new HashSet<Jogo>();
 
-        if (atualizarConsoleDTO.codigoJogos() != null && atualizarConsoleDTO.codigoJogos().size() > 0) {
+        if (atualizarConsoleDTO.codigoJogos() != null && atualizarConsoleDTO.codigoJogos().size() >= 1) {
             for (Long codigoJogo : atualizarConsoleDTO.codigoJogos()) {
                 Jogo jogo = jogoRepositorio.findByCodigo(codigoJogo).orElseThrow(
                         () -> {
                             throw new GameNotFoundException();
                         });
 
-                if (!console.getJogos().contains(jogo)) {
-                    jogos.add(jogo);
-                }
+                jogos.add(jogo);
+
             }
 
         }
