@@ -58,4 +58,4 @@ mvn spring-boot:run
 
 ## 💻 Testando as requisições
 
-Você pode testar as requisições a partir do Json do Insomnia disponibilizado no seguinte arquivo <a href="./src/main/java/diamond/consoles/assets/Insomnia.json" target='_blank'>clicando aqui.</a>
+Você pode testar as requisições a partir do Json do Insomnia disponibilizado no seguinte arquivo <a href="./src/main/java/diamond/games/assets/Insomnia.json" target='_blank'>clicando aqui.</a>
