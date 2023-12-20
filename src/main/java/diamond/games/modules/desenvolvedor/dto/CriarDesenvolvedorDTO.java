@@ -10,7 +10,6 @@ public record CriarDesenvolvedorDTO(
     @Length(min = 3, max = 100, message = "Esse campo deve conter de 3 a 100 caracteres")
     String nome,
 
-    // @URL(regexp = "^(http|https|ftp).*", message = "Insira uma URL válida")
     @URL(regexp = "^(http|https|ftp)?://.*$", message = "Insira uma URL válida")
     String website,
 

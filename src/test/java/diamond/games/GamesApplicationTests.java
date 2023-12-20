@@ -1,10 +1,10 @@
-package diamond.consoles;
+package diamond.games;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConsolesApplicationTests {
+class GamesApplicationTests {
 
 	@Test
 	void contextLoads() {

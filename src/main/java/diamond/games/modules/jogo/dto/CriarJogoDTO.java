@@ -16,7 +16,6 @@ public record CriarJogoDTO(
 
     String descricao,
 
-    // @URL(regexp = "^(http|https|ftp).*", message = "Insira uma URL válida")
     @URL(regexp = "^(http|https|ftp)?://.*$", message = "Insira uma URL válida")
     String website,
 

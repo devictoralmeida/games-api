@@ -17,14 +17,11 @@ public class CriarConsoleUseCase {
     @Transactional
     public Console execute(CriarConsoleDTO criarConsoleDTO) {
         this.consoleRepositorio.findByNome(criarConsoleDTO.nome()).ifPresent(
-            console -> {
-                throw new ExcessaoConsoleJaExiste();
-            }
-        );
+                console -> {
+                    throw new ExcessaoConsoleJaExiste();
+                });
 
-        //Console console = new Console(criarConsoleDTO);
         Console console = this.consoleRepositorio.save(new Console(criarConsoleDTO));
-        //console.setCodigo(consoleEntidade.getCodigo());
 
         return console;
     }
