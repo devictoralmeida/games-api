@@ -4,6 +4,8 @@
 
 O projeto se trata de uma API Rest desenvolvida com Java e Spring Boot, contendo as funcionalidades de CRUD de desenvolvedores, consoles e jogos.
 
+<p> <strong> BaseURL: </strong> https://games-api-3nbk.onrender.com </p>
+
 ## 🚀 Tecnologias utilizadas
 
 - Java;
@@ -19,7 +21,7 @@ O projeto se trata de uma API Rest desenvolvida com Java e Spring Boot, contendo
 
 Todos os endpoints da API foram documentados usando Swagger. Para visualizar basta acessar a URL abaixo. Lembre-se de iniciar o servidor primeiro
 
-<p>Link: <a href="http://localhost:8080/swagger-ui/index.html" target="_blank">http://localhost:8080/swagger-ui/index.html</a></p>
+<p>Link: <a href="https://games-api-3nbk.onrender.com/swagger-ui/index.html" target="_blank">https://games-api-3nbk.onrender.com/swagger-ui/index.html</a></p>
 
 ## 💻 Instalação, Dependências e Executando o Projeto
 
